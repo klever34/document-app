@@ -19,7 +19,7 @@ const App = () => {
       if (isSplash === null) {
         setShowSplash(true);
         //remove this if you want splash screen to always show up
-        await AsyncStorage.setItem('@splash_done', 'true');
+        // await AsyncStorage.setItem('@splash_done', 'true');
         setTimeout(() => {
           setShowSplash(false);
         }, 2000);

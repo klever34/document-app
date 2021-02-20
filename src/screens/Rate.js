@@ -11,14 +11,15 @@ import {
 import Header from '../components/Header';
 
 const Rate = (props) => {
-  const [defaultRating, setDefaultRating] = useState(2);
+  const [defaultRating, setDefaultRating] = useState(0);
   const [maxRating, setMaxRating] = useState([1, 2, 3, 4, 5]);
 
   const starImageFilled =
     'https://raw.githubusercontent.com/AboutReact/sampleresource/master/star_filled.png';
 
   const starImageCorner =
-    'https://raw.githubusercontent.com/AboutReact/sampleresource/master/star_corner.png';
+    // 'https://raw.githubusercontent.com/AboutReact/sampleresource/master/star_corner.png';
+    require('../assets/images/star.png')
 
   const CustomRatingBar = () => {
     return (
@@ -34,7 +35,7 @@ const Rate = (props) => {
                 source={
                   item <= defaultRating
                     ? {uri: starImageFilled}
-                    : {uri: starImageCorner}
+                    : starImageCorner
                 }
               />
             </TouchableOpacity>
@@ -56,6 +57,7 @@ const Rate = (props) => {
           <TextInput
             placeholder={'Give your valuable feeback'}
             multiline={true}
+            style={{fontFamily: 'Arimo-Variable', fontSize: 16}}
           />
         </View>
         <TouchableOpacity style={styles.btn}>
@@ -74,8 +76,8 @@ const styles = StyleSheet.create({
     borderColor: '#000',
     borderWidth: 1,
     padding: 5,
-    margin: 20,
-    borderRadius: 10,
+    marginVertical: 20,
+    // borderRadius: 10,
   },
   btn: {
     backgroundColor: '#6EC1E4',
