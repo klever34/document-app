@@ -8,6 +8,8 @@ import Policy from './src/screens/Policy';
 import Rate from './src/screens/Rate';
 import SplashScreen from './src/screens/SplashScreen';
 import AsyncStorage from '@react-native-community/async-storage';
+import {fcmService} from './src/alerts/FCMService';
+import {localNotificationService} from './src/alerts/LocalNotificationService';
 
 const Stack = createStackNavigator();
 const App = () => {
@@ -28,6 +30,43 @@ const App = () => {
       }
     }
     getSplashStatus();
+  }, []);
+
+  useEffect(() => {
+    fcmService.registerAppWithFCM();
+    fcmService.subscribeToTournament();
+    fcmService.register(onRegister, onNotification, onOpenNotification);
+    localNotificationService.configure(onOpenNotification);
+  
+    async function onRegister(token) {
+      console.log({token});
+      // await AsyncStorage.setItem(`@firebase_token`, token);
+    }
+  
+    function onNotification(notify) {
+      
+      
+      const options = {
+        soundName: 'default',
+        playSound: true,
+      };
+      localNotificationService.showNotification(
+        new Date().getMilliseconds(),
+        notify.title,
+        notify.body,
+        notify,
+        options,
+      );
+    }
+  
+    function onOpenNotification(notify) {
+      
+    }
+  
+    return () => {
+      fcmService.unRegister();
+      localNotificationService.unregister();
+    };
   }, []);
 
   if (showSplash) {
