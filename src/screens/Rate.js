@@ -6,20 +6,43 @@ import {
   ScrollView,
   TextInput,
   TouchableOpacity,
-  Image
+  Image,
+  ActivityIndicator,
 } from 'react-native';
 import Header from '../components/Header';
+import {baseUrl} from '../constants/index';
+import axios from 'axios';
 
 const Rate = (props) => {
   const [defaultRating, setDefaultRating] = useState(0);
   const [maxRating, setMaxRating] = useState([1, 2, 3, 4, 5]);
+  const [msg, setMsg] = useState(null);
+  const [showIndicator, setIndicator] = useState(false);
+  const starImageFilled = require('../assets/images/star_filled.png');
+  const starImageCorner = require('../assets/images/star.png');
 
-  const starImageFilled =
-    'https://raw.githubusercontent.com/AboutReact/sampleresource/master/star_filled.png';
+  const submitRating = async () => {
+    console.log(msg, defaultRating);
+    if (!msg) {
+      alert('Kindly enter a message');
+      return;
+    }
+    setIndicator(true);
+    try {
+      const response = await axios.post(`${baseUrl}rating`, {
+        msg,
+        rate: defaultRating,
+      });
 
-  const starImageCorner =
-    // 'https://raw.githubusercontent.com/AboutReact/sampleresource/master/star_corner.png';
-    require('../assets/images/star.png')
+      console.log(response.data);
+      alert(response.data.msg);
+      setIndicator(false);
+      setMsg('');
+    } catch (error) {
+      setIndicator(false);
+      console.log(error);
+    }
+  };
 
   const CustomRatingBar = () => {
     return (
@@ -33,9 +56,7 @@ const Rate = (props) => {
               <Image
                 style={styles.starImageStyle}
                 source={
-                  item <= defaultRating
-                    ? {uri: starImageFilled}
-                    : starImageCorner
+                  item <= defaultRating ? starImageFilled : starImageCorner
                 }
               />
             </TouchableOpacity>
@@ -57,11 +78,20 @@ const Rate = (props) => {
           <TextInput
             placeholder={'Give your valuable feeback'}
             multiline={true}
+            value={msg}
             style={{fontFamily: 'Arimo-Variable', fontSize: 16}}
+            onChangeText={(text) => setMsg(text)}
           />
         </View>
-        <TouchableOpacity style={styles.btn}>
+        <TouchableOpacity style={styles.btn} onPress={() => submitRating()}>
           <Text style={styles.btnText}>Submit</Text>
+          {showIndicator && (
+            <ActivityIndicator
+              size={'small'}
+              color={'#000'}
+              style={{paddingLeft: 10}}
+            />
+          )}
         </TouchableOpacity>
       </ScrollView>
     </View>
@@ -86,6 +116,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 20,
+    flexDirection: 'row',
   },
   btnText: {
     fontFamily: 'Arimo-Variable',
