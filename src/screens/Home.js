@@ -31,7 +31,7 @@ const Home = (props) => {
     doc: require('../assets/images/doc.png'),
     ppt: require('../assets/images/ppt.png'),
   };
-  
+
   useEffect(() => {
     async function getEndpoints() {
       await getBanners();
@@ -155,35 +155,35 @@ const Home = (props) => {
           />
         </TouchableOpacity>
       </View>
-      {/* <ScrollView style={{flex: 1}}> */}
-      <View style={styles.body}>
-        <FlatListSlider
-          data={banners}
-          timer={5000}
-          onPress={(item) => alert(JSON.stringify(item))}
-          indicatorContainerStyle={{position: 'absolute', bottom: 20}}
-          indicatorActiveColor={'#6EC1E4'}
-          indicatorInActiveColor={'#ffffff'}
-          indicatorActiveWidth={30}
-          animation
-        />
-        <View
-          style={{
-            backgroundColor: '#000',
-            height: 70,
-            marginVertical: 20,
-          }}></View>
-        <Text style={styles.headerText}>All Documents</Text>
-        <FlatList
-          style={{flex: 1}}
-          data={docs}
-          renderItem={renderDocuments}
-          keyExtractor={(item, index) => index.toString()}
-          onEndReached={handleMoreData}
-          onEndReachedThreshold={0}
-        />
-      </View>
-      {/* </ScrollView> */}
+      <ScrollView style={{flex: 1}}>
+        <View style={styles.body}>
+          <FlatListSlider
+            data={banners}
+            timer={5000}
+            onPress={(item) => alert(JSON.stringify(item))}
+            indicatorContainerStyle={{position: 'absolute', bottom: 20}}
+            indicatorActiveColor={'#6EC1E4'}
+            indicatorInActiveColor={'#ffffff'}
+            indicatorActiveWidth={30}
+            animation
+          />
+          <View
+            style={{
+              backgroundColor: '#000',
+              height: 70,
+              marginVertical: 20,
+            }}></View>
+          <Text style={styles.headerText}>All Documents</Text>
+          <FlatList
+            style={{flex: 1}}
+            data={docs}
+            renderItem={renderDocuments}
+            keyExtractor={(item, index) => index.toString()}
+            onEndReached={handleMoreData}
+            onEndReachedThreshold={0}
+          />
+        </View>
+      </ScrollView>
       <View style={{backgroundColor: 'violet', height: 70}}></View>
       <MenuModal
         popModal={showModal}
